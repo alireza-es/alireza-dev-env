@@ -1,0 +1,95 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+command_timeout = 1000
+
+format = """
+[](surface0)\
+$os\
+$username\
+[](bg:peach fg:surface0)\
+$directory\
+[](fg:peach bg:green)\
+$git_branch\
+$git_status\
+[](fg:green bg:sky)\
+$nodejs\
+$python\
+$rust\
+$golang\
+[](fg:sky bg:surface0)\
+$docker_context\
+[ ](fg:surface0)\
+$line_break$character"""
+
+palette = 'tokyonight'
+
+[palettes.tokyonight]
+surface0 = '#1b1d2b'
+peach = '#7aa2f7'
+green = '#9ece6a'
+sky = '#7dcfff'
+text = '#c0caf5'
+
+[os]
+disabled = false
+style = "bg:surface0 fg:text"
+
+[os.symbols]
+Macos = "󰀵 "
+
+[username]
+show_always = false
+style_user = "bg:surface0 fg:text"
+style_root = "bg:surface0 fg:red"
+format = '[ $user ]($style)'
+
+[directory]
+style = "fg:#1b1d2b bg:peach"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"code" = "󰲋 "
+
+[git_branch]
+symbol = ""
+style = "bg:green"
+format = '[[ $symbol $branch ](fg:#1b1d2b bg:green)]($style)'
+
+[git_status]
+style = "bg:green"
+format = '[[($all_status$ahead_behind )](fg:#1b1d2b bg:green)]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:sky"
+format = '[[ $symbol( $version) ](fg:#1b1d2b bg:sky)]($style)'
+
+[python]
+symbol = ""
+style = "bg:sky"
+format = '[[ $symbol( $version)( \($virtualenv\)) ](fg:#1b1d2b bg:sky)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:sky"
+format = '[[ $symbol( $version) ](fg:#1b1d2b bg:sky)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:sky"
+format = '[[ $symbol( $version) ](fg:#1b1d2b bg:sky)]($style)'
+
+[docker_context]
+symbol = ""
+style = "bg:surface0"
+format = '[[ $symbol( $context) ](fg:text bg:surface0)]($style)'
+
+[character]
+success_symbol = '[❯](bold green)'
+error_symbol = '[❯](bold red)'
+vimcmd_symbol = '[❮](bold yellow)'

@@ -1,0 +1,21 @@
+# OS junk
+.DS_Store
+*.swp
+*~
+
+# Secrets / local-only (never commit)
+*.local
+.env
+.env.*
+secrets.*
+**/*.secret
+**/.netrc
+
+# Neovim runtime artifacts (managed by lazy.nvim, not source)
+nvim/.config/nvim/.git/
+nvim/.config/nvim/lazyvim.json
+
+# tmux plugin manager clones (installed via bootstrap, not tracked)
+tmux/.config/tmux/plugins/
+
+# Note: nvim/.config/nvim/lazy-lock.json IS tracked for reproducibility
