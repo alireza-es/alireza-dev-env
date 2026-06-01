@@ -28,6 +28,7 @@ A complete, opinionated developer setup built for **Python**, **TypeScript**, an
 - [Quick Start](#-quick-start-fresh-machine)
 - [Manual Installation](#-manual-installation)
 - [Repository Layout](#-repository-layout)
+- [Daily Usage Guide](#-daily-usage-guide)
 - [Keybindings](#-keybindings)
 - [Language Support](#-language-support)
 - [Using Claude AI](#-using-claude-ai)
@@ -136,6 +137,116 @@ alireza-dev-env/
 ├── starship/.config/starship.toml
 └── git/.gitconfig
 ```
+
+## 📖 Daily Usage Guide
+
+A walkthrough of a typical session — from opening a terminal to editing code with Claude.
+
+### 1. Open your terminal
+
+Launch **Ghostty** (press `Cmd+Space`, type `Ghostty`, hit Enter). It opens straight
+into `zsh` with the starship prompt. New tab: `Cmd+T`, new window: `Cmd+N`.
+
+### 2. Go to your project
+
+Use normal `cd`, or `zoxide` to jump to recent folders by name:
+
+```sh
+cd ~/code/my-project       # classic
+z my-project               # zoxide — jumps to the best match from your history
+ll                         # list files (eza, with icons + git status)
+```
+
+### 3. Start a tmux session
+
+[tmux](https://github.com/tmux/tmux) keeps your panes/windows alive even if you close
+the terminal. Start (or re-attach to) a named session:
+
+```sh
+tmux new -s work           # create a session called "work"
+# ...later...
+tmux attach -t work        # re-attach to it
+tmux ls                    # list sessions
+```
+
+> The prefix is **`Ctrl-a`** — press it, release, then the next key. For example
+> `Ctrl-a` then `|` splits the window into two side-by-side panes.
+
+A common layout: editor on the left, a shell on the right.
+
+```text
+┌─────────────────────────┬───────────────┐
+│                         │  $ npm run dev │
+│        nvim             │                │
+│                         ├───────────────┤
+│                         │  $ pytest      │
+└─────────────────────────┴───────────────┘
+```
+
+- `Ctrl-a` then `|` — split left/right
+- `Ctrl-a` then `-` — split top/bottom
+- `Ctrl-h / Ctrl-j / Ctrl-k / Ctrl-l` — move between panes (and Neovim splits!)
+- `Ctrl-a` then `c` — new window · `Ctrl-a` then `1`/`2`/… — switch windows
+- `Ctrl-a` then `d` — detach (session keeps running in the background)
+
+### 4. Open Neovim on your project
+
+`cd` into the project folder first, then launch `nvim` so the editor's working
+directory (and the file tree, fuzzy finder, LSP, git) all root there:
+
+```sh
+cd ~/code/my-project
+nvim .                     # open Neovim in the current folder
+# or open a specific file:
+nvim src/app.py
+```
+
+`v .` and `vim .` are aliases for `nvim .`.
+
+### 5. Move around in Neovim
+
+The leader key is **`Space`**.
+
+| What you want                  | Do this                                            |
+| ------------------------------ | -------------------------------------------------- |
+| Toggle the file explorer       | `Space` `e`                                         |
+| Find a file by name            | `Space` `Space` (or `Space` `f` `f`)                |
+| Search text across the project | `Space` `/` (or `Space` `s` `g`) — live grep        |
+| Edit the filesystem as a buffer| `-` (oil.nvim) — rename/move/delete, then `:w`       |
+| Jump between recent buffers    | `Space` `,`                                          |
+| Open a terminal inside nvim    | `Ctrl-/`                                             |
+| Pin / jump to hot files        | `Space` `H` to pin, `Space` `1`..`4` to jump (harpoon)|
+| Save / quit                    | `:w` / `:q` (`:wq` to do both, `:qa` to quit all)    |
+
+First time you open a Python/TS/JS file, Mason finishes wiring up the language
+server automatically — you'll get completion, diagnostics, and go-to-definition
+(`g` `d`), hover docs (`K`), and rename (`Space` `c` `r`).
+
+### 6. Use git
+
+```sh
+lg                         # lazygit — full TUI for staging, commits, branches, diffs
+```
+
+Inside Neovim, changed lines are marked in the gutter, and `Space` `g` `g` opens
+lazygit in a floating window.
+
+### 7. Ask Claude
+
+- **From any pane:** `Ctrl-a` then `a` — Claude opens in a popup. Ask questions,
+  run tasks, close it when done; your panes are untouched.
+- **Inside Neovim:** `Space` `a` `c` toggles Claude. Select code in visual mode
+  (`v`), then `Space` `a` `s` sends it as context. When Claude proposes an edit,
+  review it and `Space` `a` `a` to accept or `Space` `a` `d` to reject.
+
+### 8. Wrap up
+
+Detach from tmux with `Ctrl-a` then `d` (everything keeps running), or quit
+Neovim with `:qa`. Next time, `tmux attach -t work` drops you right back in —
+and tmux also auto-saves/restores sessions across reboots.
+
+> 🆕 **New to Vim?** Run `nvim` and type `:Tutor` for the built-in 30-minute
+> interactive tutorial. Press `Space` to see which-key menus of every shortcut.
 
 ## ⌨️ Keybindings
 
