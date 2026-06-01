@@ -160,22 +160,63 @@ z my-project               # zoxide — jumps to the best match from your histor
 ll                         # list files (eza, with icons + git status)
 ```
 
-### 3. Start a tmux session
+### 3. Organize your work with tmux
 
-[tmux](https://github.com/tmux/tmux) keeps your panes/windows alive even if you close
-the terminal. Start (or re-attach to) a named session:
+[tmux](https://github.com/tmux/tmux) keeps everything alive even if you close the
+terminal. It has three levels — think of them like this:
+
+| Level       | Think of it as…              | Good for                                  |
+| ----------- | ---------------------------- | ----------------------------------------- |
+| **Session** | a whole project / workspace  | one per repo (backend, frontend, …)       |
+| **Window**  | a tab inside a session       | editor / dev server / git / logs          |
+| **Pane**    | a split inside a window      | seeing two things side by side (optional) |
+
+The prefix is **`Ctrl-a`** — press and release it, then press the next key.
+
+#### Sessions (one per project — your main unit)
 
 ```sh
-tmux new -s work           # create a session called "work"
-# ...later...
-tmux attach -t work        # re-attach to it
-tmux ls                    # list sessions
+tmux new -s backend        # create + enter a session called "backend"
+tmux new -s frontend       # another one for the frontend
+tmux ls                    # list all sessions
+tmux attach -t backend     # re-attach to one later
 ```
 
-> The prefix is **`Ctrl-a`** — press it, release, then the next key. For example
-> `Ctrl-a` then `|` splits the window into two side-by-side panes.
+Switch between sessions without leaving tmux:
 
-A common layout: editor on the left, a shell on the right.
+| Keys                | Action                                              |
+| ------------------- | --------------------------------------------------- |
+| `Ctrl-a` then `T`   | **sesh** — fuzzy-pick any session/repo (easiest)    |
+| `Ctrl-a` then `s`   | visual list of sessions — pick with arrows + Enter  |
+| `Ctrl-a` then `)`   | jump to the next session                            |
+| `Ctrl-a` then `(`   | jump to the previous session                        |
+| `Ctrl-a` then `$`   | rename the current session                          |
+| `Ctrl-a` then `d`   | detach (the session keeps running in the background)|
+
+> A backend/frontend day: `Ctrl-a T` → pick `backend`, work, `Ctrl-a T` → pick
+> `frontend`. Each stays running independently; you just hop between them.
+
+#### Windows (tabs within a session)
+
+```text
+[ 1:nvim ] [ 2:server ] [ 3:git ]      ← window bar at the top
+```
+
+| Keys                  | Action                          |
+| --------------------- | ------------------------------- |
+| `Ctrl-a` then `c`     | new window                      |
+| `Ctrl-a` then `1`/`2`…| jump to window by number        |
+| `Ctrl-a` then `n`/`p` | next / previous window          |
+| `Ctrl-a` then `,`     | rename the current window       |
+| `Ctrl-a` then `&`     | close the current window        |
+
+This is usually all you need: an `nvim` window, a window for `npm run dev`, a
+window for `git`/`lazygit` — and switch with `Ctrl-a 1/2/3`.
+
+#### Panes / splits (optional)
+
+If you ever want two things visible at once in the same window — say the editor
+on the left and a shell on the right:
 
 ```text
 ┌─────────────────────────┬───────────────┐
@@ -186,11 +227,14 @@ A common layout: editor on the left, a shell on the right.
 └─────────────────────────┴───────────────┘
 ```
 
-- `Ctrl-a` then `|` — split left/right
-- `Ctrl-a` then `-` — split top/bottom
-- `Ctrl-h / Ctrl-j / Ctrl-k / Ctrl-l` — move between panes (and Neovim splits!)
-- `Ctrl-a` then `c` — new window · `Ctrl-a` then `1`/`2`/… — switch windows
-- `Ctrl-a` then `d` — detach (session keeps running in the background)
+| Keys                       | Action                                       |
+| -------------------------- | -------------------------------------------- |
+| `Ctrl-a` then `\|`         | split left / right                           |
+| `Ctrl-a` then `-`          | split top / bottom                           |
+| `Ctrl-h` `Ctrl-j` `Ctrl-k` `Ctrl-l` | move between panes (and Neovim splits!) |
+| `Ctrl-a` then `H/J/K/L`    | resize the current pane                      |
+| `Ctrl-a` then `x`          | close the current pane                       |
+| `Ctrl-a` then `z`          | zoom a pane to fullscreen (toggle)           |
 
 ### 4. Open Neovim on your project
 
@@ -295,10 +339,18 @@ quit. Next time you open `nvim` in that repo, restore it with:
 | `prefix` + `a`      | Open **Claude** in a popup               |
 | `prefix` + `g`      | Open **lazygit** in a popup              |
 | `prefix` + `T`      | **sesh** — fuzzy-switch project/session  |
-| `prefix` + `\|`     | Split pane vertically                    |
-| `prefix` + `-`      | Split pane horizontally                  |
+| `prefix` + `s`      | List sessions (pick from a menu)         |
+| `prefix` + `(` / `)`| Previous / next session                  |
+| `prefix` + `$`      | Rename the current session               |
+| `prefix` + `d`      | Detach (session keeps running)           |
+| `prefix` + `c`      | New window (tab)                         |
+| `prefix` + `1`/`2`… | Jump to window by number                 |
+| `prefix` + `,`      | Rename the current window                |
+| `prefix` + `\|`     | Split pane vertically (optional)         |
+| `prefix` + `-`      | Split pane horizontally (optional)       |
 | `Ctrl` + `h/j/k/l`  | Move between tmux panes **and** nvim splits |
 | `prefix` + `H/J/K/L`| Resize the current pane                  |
+| `prefix` + `z`      | Zoom current pane to fullscreen (toggle) |
 | `prefix` + `r`      | Reload tmux config                       |
 
 ### Neovim (leader = `Space`)
