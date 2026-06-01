@@ -32,6 +32,7 @@ A complete, opinionated developer setup built for **Python**, **TypeScript**, an
 - [Keybindings](#-keybindings)
 - [Language Support](#-language-support)
 - [Using Claude AI](#-using-claude-ai)
+- [Cheatsheet](#-cheatsheet)
 - [Customizing](#-customizing)
 - [Updating](#-updating)
 - [Uninstalling](#-uninstalling)
@@ -394,6 +395,118 @@ Two complementary surfaces, both reusing your existing Claude login:
 - **In Neovim** — press `<leader>ac` to toggle Claude Code. Select code in visual mode and `<leader>as` to send it as context; review and accept/deny edits with `<leader>aa` / `<leader>ad`.
 
 No API key is required — [claudecode.nvim](https://github.com/coder/claudecode.nvim) talks to the official `claude` CLI over its MCP/WebSocket protocol.
+
+## 🧾 Cheatsheet
+
+A quick reference for the commands you'll use most. Neovim **leader** is `Space`;
+tmux **prefix** is `Ctrl-a` (press and release, then the next key).
+
+### Neovim — modes & survival basics
+
+| Keys                  | Action                                            |
+| --------------------- | ------------------------------------------------- |
+| `i` / `a`             | Insert before / after cursor                      |
+| `o` / `O`             | New line below / above (insert)                   |
+| `Esc` or `Ctrl-c`     | Back to Normal mode                               |
+| `v` / `V` / `Ctrl-v`  | Visual / line / block selection                   |
+| `:w` `:q` `:wq` `:qa` | Save · quit · save+quit · quit all                |
+| `u` / `Ctrl-r`        | Undo / redo                                       |
+| `.`                   | Repeat last change                                |
+
+### Neovim — moving around
+
+| Keys              | Action                                  |
+| ----------------- | --------------------------------------- |
+| `h j k l`         | Left · down · up · right                |
+| `w` / `b` / `e`   | Next word · back word · end of word     |
+| `0` / `^` / `$`   | Line start · first non-blank · line end |
+| `gg` / `G`        | Top / bottom of file                    |
+| `{n}G` or `:{n}`  | Go to line `n`                          |
+| `Ctrl-d` / `Ctrl-u` | Half page down / up                   |
+| `%`               | Jump to matching bracket                |
+| `*` / `n` / `N`   | Search word under cursor · next · prev  |
+| `/text` `?text`   | Search forward / backward               |
+
+### Neovim — editing
+
+| Keys                | Action                                       |
+| ------------------- | -------------------------------------------- |
+| `x` / `dd` / `yy`   | Delete char · delete line · yank (copy) line |
+| `dw` / `cw`         | Delete / change word                         |
+| `ciw` / `ci"` / `ci(` | Change inside word / quotes / parens       |
+| `p` / `P`           | Paste after / before                         |
+| `>>` / `<<`         | Indent / unindent line                       |
+| `gcc` / `gc` (visual) | Toggle comment line / selection            |
+
+### Neovim — project workflow (LazyVim)
+
+| Keys            | Action                                        |
+| --------------- | --------------------------------------------- |
+| `Space` `e`     | Toggle file explorer                          |
+| `Space` `Space` | Find file by name                             |
+| `Space` `/`     | Live grep across the project                  |
+| `Space` `,`     | Switch buffer                                 |
+| `Ctrl-/`        | Toggle a terminal                             |
+| `-`             | Open folder as a buffer (oil) — edit & `:w`   |
+| `gd` / `gr`     | Go to definition / references                 |
+| `K`             | Hover documentation                           |
+| `Space` `c` `a` | Code action (quick fix)                       |
+| `Space` `c` `r` | Rename symbol                                 |
+| `]d` / `[d`     | Next / previous diagnostic                    |
+| `Space` `c` `f` | Format file                                   |
+| `Space` `x` `x` | Diagnostics list (trouble)                    |
+| `Space` `g` `g` | lazygit · `]h` `[h` next/prev git hunk        |
+| `Space` `q` `s` | Restore this folder's session                 |
+| `Space` `a` `c` | Toggle Claude · `Space a s` send selection    |
+| `:Lazy`         | Plugin manager · `:Mason` tools · `:LazyHealth` |
+| `:Tutor`        | Built-in interactive Vim tutorial             |
+
+### tmux
+
+| Keys                | Action                                              |
+| ------------------- | --------------------------------------------------- |
+| `tmux new -s NAME`  | Create a session (from the shell)                   |
+| `tmux attach -t NAME` / `tmux ls` | Attach / list sessions               |
+| `prefix` `T`        | **sesh** fuzzy session/repo switcher                |
+| `prefix` `s`        | List & pick sessions                                |
+| `prefix` `(` / `)`  | Previous / next session                             |
+| `prefix` `d`        | Detach (keeps running)                              |
+| `prefix` `c`        | New window · `prefix 1/2/3` switch · `prefix ,` rename |
+| `prefix` `\|` / `-` | Split pane vertical / horizontal                    |
+| `Ctrl-h/j/k/l`      | Move between panes **and** nvim splits              |
+| `prefix` `z`        | Zoom pane fullscreen (toggle)                       |
+| `prefix` `[`        | Copy mode — `v` select, `y` copy, `q` quit          |
+| `prefix` `a` / `g`  | Claude popup / lazygit popup                        |
+| `prefix` `r`        | Reload tmux config                                  |
+
+### Shell & CLI tools
+
+| Command             | Action                                              |
+| ------------------- | --------------------------------------------------- |
+| `z NAME`            | Jump to a frequent directory (zoxide)               |
+| `zi`                | Interactive directory jump (zoxide + fzf)           |
+| `Ctrl-t`            | Fuzzy-find a file into the command line (fzf)       |
+| `Ctrl-r`            | Fuzzy-search command history (fzf)                  |
+| `Alt-c`             | Fuzzy `cd` into a subdirectory (fzf)                |
+| `ll` / `la` / `lt`  | List long · all · tree (eza)                        |
+| `cat FILE`          | View with syntax highlighting (bat)                 |
+| `lg`                | Open lazygit                                        |
+| `v .` / `nvim .`    | Open Neovim in the current folder                   |
+
+### git aliases (configured)
+
+| Alias        | Runs                                  |
+| ------------ | ------------------------------------- |
+| `git st`     | `git status`                          |
+| `git co`     | `git checkout`                        |
+| `git br`     | `git branch`                          |
+| `git cm "…"` | `git commit -m "…"`                   |
+| `git lg`     | Pretty graph log of all branches      |
+| `git last`   | Show the last commit                  |
+| `git unstage`| Unstage a file                        |
+
+> 💡 Forgot a shortcut? In Neovim just press `Space` and wait — the **which-key**
+> menu shows every available mapping. In lazygit press `?` for its keybindings.
 
 ## 🎛️ Customizing
 
