@@ -16,6 +16,7 @@ brew "eza"           # modern ls
 brew "zoxide"        # smarter cd
 brew "starship"      # cross-shell prompt
 brew "lazygit"       # terminal git UI
+brew "sesh"          # smart tmux session manager (zoxide + fzf)
 brew "git-delta"     # better git diffs
 brew "gh"            # GitHub CLI
 brew "jq"            # JSON processor

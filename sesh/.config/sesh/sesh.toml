@@ -1,0 +1,30 @@
+# sesh - smart tmux session manager
+# https://github.com/joshmedeski/sesh
+#
+# `sesh list` shows: tmux sessions + zoxide dirs + configured sessions below.
+# Trigger the fuzzy picker with `prefix + T` in tmux.
+#
+# Tip: inside a project run `nvim` then `<leader>qs` to restore that project's
+# Neovim session (saved automatically by persistence.nvim on exit).
+
+# --- Named sessions (examples) ---------------------------------------------
+# Uncomment and edit these to pin your common repos. `name` is what shows in
+# the picker; `path` is the directory; `startup_command` runs on first attach.
+#
+# Setting `startup_command = "nvim -c 'lua require\"persistence\".load()'"`
+# opens Neovim AND restores the last saved session for that repo.
+#
+# [[session]]
+# name = "backend "
+# path = "~/code/backend"
+# startup_command = "nvim -c 'lua require\"persistence\".load()'"
+#
+# [[session]]
+# name = "frontend "
+# path = "~/code/frontend"
+# startup_command = "nvim -c 'lua require\"persistence\".load()'"
+#
+# [[session]]
+# name = "dotfiles "
+# path = "~/code/alireza-es/alireza-dev-env"
+# startup_command = "nvim ."

@@ -47,7 +47,7 @@ fi
 
 # 6. Stow all packages into $HOME
 echo "==> Stowing dotfiles..."
-for pkg in nvim tmux ghostty zsh starship git; do
+for pkg in nvim tmux ghostty zsh starship sesh git; do
   stow --dir "$DOTFILES_DIR" --target "$HOME" --restow "$pkg"
 done
 

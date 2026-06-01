@@ -41,6 +41,7 @@ A complete, opinionated developer setup built for **Python**, **TypeScript**, an
 
 - ⚡ **GPU-accelerated terminal** — [Ghostty](https://ghostty.org) with ligatures, a Nerd Font, and the tokyonight theme.
 - 🪟 **Powerful multiplexing** — tmux with seamless Neovim navigation, session persistence, and a one-key Claude popup.
+- 🔀 **Instant repo switching** — [sesh](https://github.com/joshmedeski/sesh) + [persistence.nvim](https://github.com/folke/persistence.nvim): fuzzy-jump between projects (each its own tmux session) and resume your exact Neovim layout per repo — perfect for running a backend and frontend at once.
 - 💤 **IDE-grade editor** — [LazyVim](https://www.lazyvim.org) with LSP, completion, debugging, testing, and fuzzy finding pre-wired.
 - 🤖 **Claude everywhere** — Claude Code in a tmux popup _and_ inside Neovim via [claudecode.nvim](https://github.com/coder/claudecode.nvim) (reuses your existing Claude login — no API key).
 - 🐍 **Python / TS / JS ready** — language servers, formatters, linters, and debuggers installed automatically.
@@ -54,6 +55,7 @@ A complete, opinionated developer setup built for **Python**, **TypeScript**, an
 | --------------- | -------------------------------------------------------------------- |
 | Terminal        | [Ghostty](https://ghostty.org)                                       |
 | Multiplexer     | [tmux](https://github.com/tmux/tmux) + [TPM](https://github.com/tmux-plugins/tpm) |
+| Session manager | [sesh](https://github.com/joshmedeski/sesh) + [persistence.nvim](https://github.com/folke/persistence.nvim) |
 | Editor          | [Neovim](https://neovim.io) + [LazyVim](https://www.lazyvim.org)     |
 | Shell           | zsh + [starship](https://starship.rs)                                |
 | Prompt extras   | [zoxide](https://github.com/ajeetdsouza/zoxide), [fzf](https://github.com/junegunn/fzf) |
@@ -103,7 +105,7 @@ brew bundle --file=Brewfile
 npm install -g tree-sitter-cli
 
 # 2. Symlink configs into $HOME
-stow --target "$HOME" nvim tmux ghostty zsh starship git
+stow --target "$HOME" nvim tmux ghostty zsh starship sesh git
 
 # 3. tmux plugins (or just open tmux — it auto-bootstraps TPM)
 git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
@@ -135,6 +137,7 @@ alireza-dev-env/
 ├── ghostty/.config/ghostty/config
 ├── zsh/.zshrc
 ├── starship/.config/starship.toml
+├── sesh/.config/sesh/sesh.toml    # smart session manager config
 └── git/.gitconfig
 ```
 
@@ -248,6 +251,41 @@ and tmux also auto-saves/restores sessions across reboots.
 > 🆕 **New to Vim?** Run `nvim` and type `:Tutor` for the built-in 30-minute
 > interactive tutorial. Press `Space` to see which-key menus of every shortcut.
 
+### Working with multiple repos (e.g. backend + frontend)
+
+Two pieces work together so you can flip between projects and pick up exactly
+where you left off:
+
+**`sesh`** gives every project its own tmux session and a fuzzy switcher. From
+anywhere, press `prefix` (`Ctrl-a`) then `T` — a popup lists your open sessions,
+recent (zoxide) directories, and any repos pinned in
+[`sesh.toml`](sesh/.config/sesh/sesh.toml). Pick one and you jump straight into a
+session rooted there. So a backend/frontend day looks like:
+
+```text
+prefix T → pick "backend"    # working on the API
+prefix T → pick "frontend"   # hop over to the UI — backend stays running
+prefix T → pick "backend"    # hop back, exactly as you left it
+```
+
+You can pin your common repos by uncommenting the examples in `sesh.toml`, so
+they always appear in the picker by name.
+
+**`persistence.nvim`** (built into LazyVim) remembers your Neovim state _per
+directory_ — open buffers, splits, and tabs. It saves automatically when you
+quit. Next time you open `nvim` in that repo, restore it with:
+
+| Keys         | Action                                     |
+| ------------ | ------------------------------------------ |
+| `<leader>qs` | Restore the session for the current folder |
+| `<leader>ql` | Restore the last session                   |
+| `<leader>qS` | Pick a session from the list               |
+| `<leader>qd` | Stop auto-saving the current session       |
+
+> 💡 To auto-open Neovim **and** restore the session whenever you enter a repo,
+> set that repo's `startup_command` in `sesh.toml` to
+> `nvim -c 'lua require"persistence".load()'` (commented examples are included).
+
 ## ⌨️ Keybindings
 
 ### tmux (prefix = `Ctrl-a`)
@@ -256,6 +294,7 @@ and tmux also auto-saves/restores sessions across reboots.
 | ------------------- | ---------------------------------------- |
 | `prefix` + `a`      | Open **Claude** in a popup               |
 | `prefix` + `g`      | Open **lazygit** in a popup              |
+| `prefix` + `T`      | **sesh** — fuzzy-switch project/session  |
 | `prefix` + `\|`     | Split pane vertically                    |
 | `prefix` + `-`      | Split pane horizontally                  |
 | `Ctrl` + `h/j/k/l`  | Move between tmux panes **and** nvim splits |
@@ -275,6 +314,9 @@ and tmux also auto-saves/restores sessions across reboots.
 | `<leader>p`    | Yank history (yanky)                    |
 | `<leader>rr`   | Refactor menu                           |
 | `<leader>cv`   | Select Python virtualenv                |
+| `<leader>qs`   | Restore this project's session          |
+| `<leader>ql`   | Restore last session                    |
+| `<leader>qd`   | Stop saving the current session         |
 
 > The rest follow standard LazyVim defaults — see [lazyvim.org/keymaps](https://www.lazyvim.org/keymaps).
 
@@ -326,7 +368,7 @@ nvim "+Lazy sync" +qa    # Neovim plugins
 
 ```sh
 cd ~/code/alireza-es/alireza-dev-env
-stow -D nvim tmux ghostty zsh starship git   # remove the symlinks
+stow -D nvim tmux ghostty zsh starship sesh git   # remove the symlinks
 ```
 
 Your backed-up originals remain in `~/dev-env-backup-<timestamp>/`.
